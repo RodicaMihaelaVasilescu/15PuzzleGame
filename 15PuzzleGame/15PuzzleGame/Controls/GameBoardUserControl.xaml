@@ -1,0 +1,120 @@
+﻿<UserControl
+  x:Class="_15PuzzleGame.Controls.GameBoardUserControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:_15PuzzleGame.Controls"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  Width="500"
+  Height="500"
+  Background="#aaccb1"
+  mc:Ignorable="d">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <Style x:Key="NoItemHighlight" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <ContentPresenter />
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+      <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Margin" Value="0,-3" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+              <Border
+                x:Name="Bd"
+                Padding="{TemplateBinding Padding}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="true">
+                <ContentPresenter
+                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+              </Border>
+              <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                  <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                </Trigger>
+              </ControlTemplate.Triggers>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid>
+
+
+    <ListBox
+      Name="OuterListBox"
+      Grid.Row="2"
+      Background="Transparent"
+      Height="auto"
+      MaxHeight="500"
+      Margin="10,10,10,0"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Center"
+      AlternationCount="2"
+      BorderThickness="0"
+      Focusable="False"
+      ItemContainerStyle="{StaticResource ListBoxItemStyle}"
+      ItemsSource="{Binding Board}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <ListBox
+            Name="InnerListBox"
+            Height="auto"
+            Background="Transparent"
+            BorderThickness="0"
+            Focusable="False"
+            ItemContainerStyle="{StaticResource NoItemHighlight}"
+            ItemsSource="{Binding}"
+            SelectedItem="{Binding SelectedSquare}">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <Border
+                  Width="{Binding Size}"
+                  Height="{Binding Size}"
+                  Margin="5"
+                  Background="{Binding Background}"
+                  CornerRadius="5">
+
+                  <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding Number}"
+                    FontSize="25"
+                    FontStyle="Italic"
+                    FontWeight="ExtraLight"
+                    Foreground="White" />
+
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+  </Grid>
+</UserControl>

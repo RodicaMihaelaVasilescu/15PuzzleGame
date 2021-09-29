@@ -1,0 +1,21 @@
+﻿<Window
+  x:Class="_15PuzzleGame.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:_15PuzzleGame.Controls"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:_15PuzzleGame"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:viewModels="clr-namespace:_15PuzzleGame.ViewModels"
+  Title="MainWindow"
+  Width="550"
+  Height="550"
+  mc:Ignorable="d">
+  <Grid>
+    <controls:GameBoardUserControl>
+      <UserControl.DataContext>
+        <viewModels:GameBoardViewModel />
+      </UserControl.DataContext>
+    </controls:GameBoardUserControl>
+  </Grid>
+</Window>
