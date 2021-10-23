@@ -33,56 +33,57 @@ namespace _15PuzzleGame.ViewModels
 
     private void InitializeBoard()
     {
+      var indexes = new List<int>();
+      for (int i = 1; i < 16; i++)
+      {
+        indexes.Add(i);
+      }
+
+      var newRandomList = new List<int>();
+
+      int noOfInversions = 0;
+      int previous = 0;
+      while (indexes.Any())
+      {
+        var rnd = new Random();
+        int index = rnd.Next() % indexes.Count;
+        newRandomList.Add(indexes[index]);
+        if (previous > indexes[index])
+        {
+          noOfInversions++;
+        }
+        previous = indexes[index];
+        indexes.RemoveAt(index);
+      }
+
+      if ( noOfInversions % 2 != 0)
+      {
+        var aux = newRandomList[0];
+        newRandomList[0] = newRandomList[1];
+        newRandomList[1] = aux;
+      }
+
+      newRandomList.Add(0);
+
+      int nr = 0;
       for (int i = 0; i < 4; i++)
       {
         var temp = new ObservableCollection<Square>();
         for (int j = 0; j < 4; j++)
         {
-          var square = new Square { Line = i, Column = j };
+          var square = new Square { Line = i, Column = j, Number = newRandomList[nr].ToString() };
+          if (square.Number == "0")
+          {
+            square.Number = string.Empty;
+            square.Background = EmptyBackground;
+            EmptySquare = square;
+          }
           square.Moved += MoveSquare;
           temp.Add(square);
+          nr++;
         }
         Board.Add(temp);
       }
-      var list = new ObservableCollection<Square>();
-      var indexes = new List<string>();
-      for (int i = 1; i < 16; i++)
-      {
-        indexes.Add(i.ToString());
-      }
-      indexes.Add(string.Empty);
-
-      int nr = 0;
-      while (indexes.Any())
-      {
-        var rnd = new Random();
-        int index = rnd.Next() % indexes.Count;
-        Board[nr / 4][nr % 4].Number = indexes[index];
-        if (Board[nr / 4][nr % 4].Number == string.Empty)
-        {
-          EmptySquare = Board[nr / 4][nr % 4];
-          EmptySquare.Number = string.Empty;
-          EmptySquare.Background = EmptyBackground;
-        }
-        indexes.RemoveAt(index);
-        nr++;
-      }
-
-      //  for (int i = 0; i < 16; i++)
-      //  {
-      //    var square = new Square { Number = (i+1).ToString(), Line = i/4, Column = i % 4 };
-      //    square.Moved += MoveSquare;
-      //    list.Add(square);
-      //    if ((i+1) % 4 == 0)
-      //    {
-      //      Board.Add(list);
-      //      list = new ObservableCollection<Square>();
-      //    }
-      //  }
-      //  EmptySquare = Board[3][3];
-      //  EmptySquare.Number = string.Empty;
-      //  EmptySquare.Background = EmptyBackground;
-      //}
     }
     Square EmptySquare;
     Brush DefaultBackground = new SolidColorBrush(Color.FromRgb(0x22, 0X22, 0X00));
